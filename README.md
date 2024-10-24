@@ -91,7 +91,7 @@ Would become:
 
 ```ts
 {
-    type: 'LiteralExpression',
+    type: 'Literal',
     value: 'foo'
 }
 ```
@@ -106,7 +106,7 @@ Would become:
 
 ```ts
 {
-    type: 'LiteralExpression',
+    type: 'Literal',
     value: 'foo',
     isNegative: true
 }
@@ -122,7 +122,7 @@ Would become:
 
 ```ts
 {
-    type: 'LiteralExpression',
+    type: 'Literal',
     value: 'bar',
     field: 'foo'
 }
@@ -142,14 +142,14 @@ Would become:
 
 ```ts
 {
-    type: 'LogicalExpression',
+    type: 'Logical',
     left: {
-        type: 'LiteralExpression',
+        type: 'Literal',
         value: 'foo'
     },
     operator: 'AND',
     right: {
-        type: 'LiteralExpression',
+        type: 'Literal',
         value: 'bar'
     },
 }
@@ -165,14 +165,14 @@ Would become:
 
 ```ts
 {
-    type: 'LogicalExpression',
+    type: 'Logical',
     left: {
-        type: 'LiteralExpression',
+        type: 'Literal',
         value: 'foo'
     },
     operator: 'AND',
     right: {
-        type: 'LiteralExpression',
+        type: 'Literal',
         value: 'bar',
         isNegative: true
     },
