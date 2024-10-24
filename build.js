@@ -10,5 +10,6 @@ esbuild
     sourcemap: true,
     outfile: 'dist/index.js',
     minify: true,
+    keepNames: true,
   })
   .catch(() => process.exit(1));
