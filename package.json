@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "node build.js && tsc",
+    "build": "rimraf dist && tsc",
     "lint": "eslint src/",
     "prettier": "prettier --write \"**/*.{ts,tsx,md,css,json}\"",
     "test": "jest src/"
