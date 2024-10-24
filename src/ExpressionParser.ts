@@ -2,6 +2,9 @@ import { LiteralExpression } from './LiteralExpression';
 import { LogicalExpression } from './LogicalExpression';
 import { Expression, ExpressionOptions, Operator } from './types';
 
+const EXPRESSION_SPLIT_REGEX =
+  /([-\w]+:"[^"]*"|[-\w]+:[-\w]+|"[^"]*"|\([^()]*\)|[-\w]+)\s*(AND\s+NOT|OR\s+NOT|AND|OR|&&|\|\||\||&)?\s*/g;
+
 export class ExpressionParser {
   private options: ExpressionOptions;
 
@@ -23,9 +26,7 @@ export class ExpressionParser {
 
   private splitExpression = (expression: string): string[] => {
     const result = expression
-      .split(
-        /(\([^()]*\)|[-\w]+:*[\w]*)\s*(AND\s+NOT|OR\s+NOT|AND|OR|&&|\|\||\||&)?\s*/g
-      )
+      .split(EXPRESSION_SPLIT_REGEX)
       .filter((part) => !!part)
       .filter((part) => part.trim())
       .map((part) => part.replace(/^\(/, '').replace(/\)$/, ''));

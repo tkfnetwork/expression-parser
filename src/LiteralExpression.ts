@@ -18,7 +18,7 @@ export class LiteralExpression implements LiteralExpressionInterface {
 
     const [value, field] = (
       isStringValue
-        ? strippedString.split(':').reverse()
+        ? strippedString.replaceAll('"', '').split(':').reverse()
         : [rawValue, undefined]
     ) as [LiteralValue, string | undefined];
 
