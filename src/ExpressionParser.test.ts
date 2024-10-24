@@ -33,8 +33,6 @@ test.each`
     const parser = new ExpressionParser(options);
     const result = parser.parse(expression);
 
-    console.dir(result);
-
     expect(result).toEqual(expected);
   }
 );
