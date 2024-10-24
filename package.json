@@ -14,6 +14,10 @@
     "prettier": "prettier --write \"**/*.{ts,tsx,md,css,json}\"",
     "test": "jest src/"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "author": "Kris Pomphrey <kris@tkf.network>",
   "license": "ISC",
   "devDependencies": {
