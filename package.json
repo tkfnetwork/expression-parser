@@ -1,7 +1,12 @@
 {
   "name": "@tkfnetwork/expression-parser",
   "version": "0.0.3",
-  "description": "",
+  "description": "A small AST parser for AND/OR expressions",
+  "keywords": [
+    "ast",
+    "expression",
+    "parser"
+  ],
   "main": "dist/index.js",
   "scripts": {
     "build": "rimraf dist && tsc",
@@ -9,13 +14,12 @@
     "prettier": "prettier --write \"**/*.{ts,tsx,md,css,json}\"",
     "test": "jest src/"
   },
-  "author": "",
+  "author": "Kris Pomphrey <kris@tkf.network>",
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.13.0",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
-    "esbuild": "^0.24.0",
     "eslint": "^9.13.0",
     "jest": "^29.7.0",
     "prettier": "^3.3.3",
