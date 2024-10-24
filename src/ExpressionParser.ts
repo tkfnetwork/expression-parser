@@ -3,7 +3,7 @@ import { LogicalExpression } from './LogicalExpression';
 import { Expression, ExpressionOptions, Operator } from './types';
 
 const EXPRESSION_SPLIT_REGEX =
-  /([-\w]+:"[^"]*"|[-\w]+:[-\w]+|"[^"]*"|\([^()]*\)|[-\w]+)\s*(AND\s+NOT|OR\s+NOT|AND|OR|&&|\|\||\||&)?\s*/g;
+  /([^\s:]+:"[^"]*"|[^\s:]+:[^\s]+|"[^"]*"|\([^()]*\)|[^\s]+)\s*(AND\s+NOT|OR\s+NOT|AND|OR|&&|\|\||\||&)?\s*/g;
 
 export class ExpressionParser {
   private options: ExpressionOptions;
