@@ -1,6 +1,6 @@
 {
   "name": "@tkfnetwork/expression-parser",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A small AST parser for AND/OR expressions",
   "keywords": [
     "ast",
