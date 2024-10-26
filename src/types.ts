@@ -8,9 +8,10 @@ export type ExpressionType =
 export interface BaseExpressionInterface {
   type: ExpressionType;
   isNegative?: boolean;
+  isExact?: boolean;
 }
 
-export type LiteralValue = string | number | boolean;
+export type LiteralValue = string;
 
 export interface LiteralExpressionInterface extends BaseExpressionInterface {
   field?: string;

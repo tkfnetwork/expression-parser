@@ -12,6 +12,7 @@ export class LogicalExpression implements LogicalExpressionInterface {
     public left: Expression,
     public operator: Operator,
     public right: Expression,
-    public isNegative = false
+    public isNegative?: boolean,
+    public isExact?: boolean
   ) {}
 }
