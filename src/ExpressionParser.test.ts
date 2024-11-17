@@ -32,6 +32,7 @@ test.each`
   ${'foo AND !(bar AND baa)'}     | ${new LogicalExpression(new LiteralExpression('foo'), 'AND', new LogicalExpression(new LiteralExpression('bar'), 'AND', new LiteralExpression('baa'), undefined, true))} | ${{}}
   ${'(foo:bar AND bar:boo)'}      | ${new LogicalExpression(new LiteralExpression('foo:bar'), 'AND', new LiteralExpression('bar:boo'))}                                                                      | ${{}}
   ${'(bar OR doo) AND foo'}       | ${new LogicalExpression(new LogicalExpression(new LiteralExpression('bar'), 'OR', new LiteralExpression('doo')), 'AND', new LiteralExpression('foo'))}                   | ${{}}
+  ${'foo:bar,boo,far'}            | ${new LiteralExpression('foo:bar,boo,far')}                                                                                                                              | ${{}}
 `(
   'given expression $expression result should be $expected',
   ({ expression, expected, options }) => {
