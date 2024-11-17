@@ -23,7 +23,6 @@ test.each`
   ${'field1:foo'}                 | ${new LiteralExpression('field1:foo')}                                                                                                                                   | ${{}}
   ${'-field1:foo'}                | ${new LiteralExpression('field1:foo', true)}                                                                                                                             | ${{}}
   ${'foo AND (bar OR doo)'}       | ${new LogicalExpression(new LiteralExpression('foo'), 'AND', new LogicalExpression(new LiteralExpression('bar'), 'OR', new LiteralExpression('doo')))}                   | ${{}}
-  ${'(bar OR doo) AND foo'}       | ${new LogicalExpression(new LogicalExpression(new LiteralExpression('bar'), 'OR', new LiteralExpression('doo')), 'AND', new LiteralExpression('foo'))}                   | ${{}}
   ${'foo AND ("bar baa" OR doo)'} | ${new LogicalExpression(new LiteralExpression('foo'), 'AND', new LogicalExpression(new LiteralExpression('bar baa'), 'OR', new LiteralExpression('doo')))}               | ${{}}
   ${'foo:"bar doo" AND bar'}      | ${new LogicalExpression(new LiteralExpression('foo:"bar doo"'), 'AND', new LiteralExpression('bar'))}                                                                    | ${{}}
   ${'foo AND @bar'}               | ${new LogicalExpression(new LiteralExpression('foo'), 'AND', new LiteralExpression('@bar'))}                                                                             | ${{}}
@@ -31,6 +30,8 @@ test.each`
   ${'-!field1:foo'}               | ${new LiteralExpression('field1:foo', true, true)}                                                                                                                       | ${{}}
   ${'foo AND !-bar'}              | ${new LogicalExpression(new LiteralExpression('foo'), 'AND', new LiteralExpression('bar', true, true))}                                                                  | ${{}}
   ${'foo AND !(bar AND baa)'}     | ${new LogicalExpression(new LiteralExpression('foo'), 'AND', new LogicalExpression(new LiteralExpression('bar'), 'AND', new LiteralExpression('baa'), undefined, true))} | ${{}}
+  ${'(foo:bar AND bar:boo)'}      | ${new LogicalExpression(new LiteralExpression('foo:bar'), 'AND', new LiteralExpression('bar:boo'))}                                                                      | ${{}}
+  ${'(bar OR doo) AND foo'}       | ${new LogicalExpression(new LogicalExpression(new LiteralExpression('bar'), 'OR', new LiteralExpression('doo')), 'AND', new LiteralExpression('foo'))}                   | ${{}}
 `(
   'given expression $expression result should be $expected',
   ({ expression, expected, options }) => {

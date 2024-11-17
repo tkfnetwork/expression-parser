@@ -2,7 +2,6 @@
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-
 A small AST expression parser that parses natural AND/OR expressions, handling nested expressions, negative expressions and field expressions.
 
 ## Installation

@@ -4,9 +4,10 @@ import { Expression, ExpressionOptions, Operator } from './types';
 
 export class ExpressionParser {
   static EXPRESSION_SPLIT_REGEX =
-    /([^\s:]+:"[^"]*"|[^\s:]+:[^\s]+|"[^"]*"|\([^()]*\)|[^\s]+)\s*(AND\s+NOT|OR\s+NOT|AND|OR|&&|\|\||\||&)?\s*/g;
-  static FLAGS_REGEX = /^[-!]+/g;
-  static GROUPED_REGEX = /^([!\\-]*)\(([^¬]*)\)$/;
+    /([-!]?\((?:[^()]+|\([^()]*\))*\)|[^\s:]+:"[^"]*"|[^\s:]+:[^\s]+|"[^"]*"|[-!]?[^\s()]+)\s*(AND\s+NOT|OR\s+NOT|AND|OR|&&|\|\||\||&)?\s*/g;
+  static FLAGS_REGEX = /^(-|!)+/g;
+  static GROUPED_FLAGS_REGEX = /^[-!]*\(([^)]+(:[^)]+)?)\)/i;
+  static GROUPED_REGEX = /^([!\\-]*)\([^¬]*\s*(AND|OR|\s)+\s*[^¬]+\)$/i;
 
   private options: ExpressionOptions;
 
@@ -41,48 +42,62 @@ export class ExpressionParser {
 
     return result;
   };
-
   private buildExpressionType = (
     expression: string,
     isNegative?: boolean,
-    isExact?: boolean
+    isExact?: boolean,
+    innerGroup?: boolean
   ): Expression => {
-    const isGroupedExpression = ExpressionParser.GROUPED_REGEX.test(expression);
-
-    const flags: string[] =
-      expression.match(ExpressionParser.FLAGS_REGEX)?.at(0)?.split('') ?? [];
-
-    const splitExpression = this.splitExpression(
-      isGroupedExpression
-        ? expression
-            .replace(ExpressionParser.GROUPED_REGEX, '$2')
-            .replace(ExpressionParser.FLAGS_REGEX, '')
-        : expression
+    const splitExpression = this.splitExpression(expression);
+    const grouped = splitExpression.map((exp) =>
+      ExpressionParser.GROUPED_REGEX.test(exp)
+    );
+    const flags = splitExpression.map((exp) =>
+      exp
+        .match(ExpressionParser.FLAGS_REGEX)
+        ?.flatMap((match) => match.split(''))
     );
 
     const isLogical = splitExpression.length > 2;
-
-    const isNeg = isNegative || flags.includes('-') || undefined;
-    const isExt = isExact || flags.includes('!') || undefined;
+    const isNeg = isNegative || flags.at(0)?.includes('-') || undefined;
+    const isExt = isExact || flags.at(0)?.includes('!') || undefined;
 
     if (isLogical) {
       const [left, operator, ...right] = splitExpression;
+      const replacedLeft = left.replace(
+        ExpressionParser.GROUPED_FLAGS_REGEX,
+        '$1'
+      );
+
       return new LogicalExpression(
-        this.buildExpressionType(left),
+        this.buildExpressionType(replacedLeft),
         (this.operatorMap.get(operator) ?? operator) as Operator,
         this.buildExpressionType(
           right.join(' '),
           operator.includes('NOT') || undefined
         ),
-        isGroupedExpression ? isNeg : undefined,
-        isGroupedExpression ? isExt : undefined
+        grouped.at(0) || innerGroup ? isNeg : undefined,
+        grouped.at(0) || innerGroup ? isExt : undefined
+      );
+    }
+
+    const literalValue = splitExpression
+      .join('')
+      .replace(ExpressionParser.FLAGS_REGEX, '');
+
+    if (ExpressionParser.GROUPED_FLAGS_REGEX.test(literalValue)) {
+      return this.buildExpressionType(
+        literalValue.replace(ExpressionParser.GROUPED_FLAGS_REGEX, '$1'),
+        isNeg,
+        isExt,
+        true
       );
     }
 
     return new LiteralExpression(
       splitExpression.join('').replace(ExpressionParser.FLAGS_REGEX, ''),
-      isNeg,
-      isExt
+      isNeg || undefined,
+      isExt || undefined
     );
   };
 
